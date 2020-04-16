@@ -19,7 +19,8 @@ public class Starlight extends AbstractGame {
 	public void init(GameContainer gc, GL2 gl) {
 		world = new World("world");
 		player = new PlayerEntity(world, 0.0f, 0.0f);
-		crate = new CrateEntity(world, 1.0f, 1.0f);
+		crate = new CrateEntity(world, -1.0f, -1.0f);
+		crate.setVelocity(0.1f, 0);
 		world.spawnEntity(player);
 		world.spawnEntity(crate);
 	}

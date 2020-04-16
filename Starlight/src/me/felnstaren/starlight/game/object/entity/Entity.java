@@ -137,9 +137,6 @@ public abstract class Entity implements GameObject {
 	}
 	
 	public void update(GameContainer gc, float delta_time) {
-		x += vx * delta_time;
-		y += vy * delta_time;
-		
 		if(Options.debug) {
 			if(world.isColliding(this)) {
 				DEBUG_COLOR.r = 255; DEBUG_COLOR.g = 0;	
@@ -148,34 +145,42 @@ public abstract class Entity implements GameObject {
 			}
 		}
 		
-		if(colf == CollisionFlag.PASSTHROUGH) return;
 		ArrayList<LivingEntity> colliding = world.getColliding(this);
-		if(colliding.isEmpty()) return;
-		
-		for(LivingEntity col : colliding) {
-			Polygon xtrans = col.getBoundingBox().getRotated();
-			Polygon ytrans = col.getBoundingBox().getRotated();
-			xtrans.translate(new Translation(col.getX(), col.getY() - col.getVY() * delta_time, 0));
-			ytrans.translate(new Translation(col.getX() - col.getVX() * delta_time, col.getY(), 0));
-			Polygon tbb = bb.getRotated();
-			tbb.translate(new Translation(x, y, 0));
-			if(xtrans.isCollision(tbb)) {
-				if(colf == CollisionFlag.SOLID) {
-					col.translate(-col.getVX() * (delta_time + 0.001f), 0);
-					col.setVX(0);
-				} else if(colf == CollisionFlag.BOUNCE) {
-					col.setVX(-col.getVX());
+		if(!colliding.isEmpty()) {
+			for(LivingEntity col : colliding) {
+				Polygon xtrans = col.getBoundingBox().getRotated();
+				Polygon ytrans = col.getBoundingBox().getRotated();
+				xtrans.translate(new Translation(col.getX(), col.getY() - col.getVY() * delta_time, 0));
+				ytrans.translate(new Translation(col.getX() - col.getVX() * delta_time, col.getY(), 0));
+				Polygon tbb = bb.getRotated();
+				tbb.translate(new Translation(x, y, 0));
+				if(xtrans.isCollision(tbb)) {
+					if(colf == CollisionFlag.SOLID) {
+						col.translate(-col.getVX() * (delta_time + 0.001f), 0);
+						col.setVX(0);
+					} else if(colf == CollisionFlag.BOUNCE) {
+						col.setVX(-col.getVX());
+					} else if(colf == CollisionFlag.PASSTHROUGH) {
+						x += (col.getVX() * (delta_time + 0.001f));
+						vx = col.getVX();
+					}
 				}
-			}
-			if(ytrans.isCollision(tbb)) {
-				if(colf == CollisionFlag.SOLID) {
-					col.translate(0, -col.getVY() * (delta_time + 0.001f));
-					col.setVY(0);
-				} else if(colf == CollisionFlag.BOUNCE) {
-					col.setVY(-col.getVY());
+				if(ytrans.isCollision(tbb)) {
+					if(colf == CollisionFlag.SOLID) {
+						col.translate(0, -col.getVY() * (delta_time + 0.001f));
+						col.setVY(0);
+					} else if(colf == CollisionFlag.BOUNCE) {
+						col.setVY(-col.getVY());
+					} else if(colf == CollisionFlag.PASSTHROUGH) {
+						y += (col.getVY() * (delta_time + 0.001f));
+						vy = col.getVY();
+					}
 				}
 			}
 		}
+		
+		x += vx * delta_time;
+		y += vy * delta_time;
 	}
 	
 }
