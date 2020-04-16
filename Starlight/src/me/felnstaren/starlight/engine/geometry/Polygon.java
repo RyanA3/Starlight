@@ -54,6 +54,7 @@ public class Polygon {
 	
 	public Polygon getRotated() {
 		Polygon rotated = clone();
+		if(rotation == 0) return rotated;
 		rotated.rotate(rotation, rotation_vertex);
 		rotated.setRotationVertex(rotation_vertex);
 		return rotated;

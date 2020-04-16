@@ -1,5 +1,7 @@
 package me.felnstaren.starlight.game.object.entity;
 
+import java.util.ArrayList;
+
 import com.jogamp.opengl.GL2;
 
 import me.felnstaren.starlight.engine.GameContainer;
@@ -10,6 +12,7 @@ import me.felnstaren.starlight.engine.graphics.Color;
 import me.felnstaren.starlight.engine.graphics.Graphics;
 import me.felnstaren.starlight.engine.graphics.ImageResource;
 import me.felnstaren.starlight.game.Options;
+import me.felnstaren.starlight.game.object.CollisionFlag;
 import me.felnstaren.starlight.game.object.GameObject;
 import me.felnstaren.starlight.game.object.entity.type.EntityType;
 import me.felnstaren.starlight.game.world.World;
@@ -25,8 +28,9 @@ public abstract class Entity implements GameObject {
 	protected EntityType type;
 	protected ImageResource texture;
 	protected static final Color DEBUG_COLOR = new Color(0, 255, 0);
+	protected CollisionFlag colf;
 	
-	public Entity(EntityType type, float x, float y, float width, float height, World world) {
+	public Entity(EntityType type, float x, float y, float width, float height, World world, CollisionFlag colf) {
 		this.type = type;
 		this.x = x;
 		this.y = y;
@@ -39,6 +43,7 @@ public abstract class Entity implements GameObject {
 				new Vertex(width / 2, -height / 2),
 				new Vertex(width / 2, height / 2)
 				);
+		this.colf = colf;
 	}
 	
 	
@@ -106,18 +111,18 @@ public abstract class Entity implements GameObject {
 		this.vy = vy;
 	}
 	
+	public CollisionFlag getCollisionFlag() {
+		return colf;
+	}
+	
 	public boolean isCollision(Entity entity) {
-		Polygon otherbb = entity.getBoundingBox();
+		Polygon otherbb = entity.getBoundingBox().getRotated();
+		Polygon thisbb = bb.getRotated();
 		
 		otherbb.translate(new Translation(entity.getX(), entity.getY(), 0));
-		bb.translate(new Translation(x, y, 0));
-		
-		boolean collided = bb.isCollision(otherbb);
-		
-		bb.translate(new Translation(-x, -y, 0));
-		otherbb.translate(new Translation(-entity.getX(), -entity.getY(), 0));
-		
-		return collided;
+		thisbb.translate(new Translation(x, y, 0));
+
+		return thisbb.isCollision(otherbb);
 	}
 	
 	
@@ -125,7 +130,7 @@ public abstract class Entity implements GameObject {
 	public void render(GameContainer gc, GL2 gl) {
 		if(Options.debug) {
 			Graphics.setColor(DEBUG_COLOR.r, DEBUG_COLOR.g, DEBUG_COLOR.b);
-			Graphics.polygon(gl, bb, x, y);
+			Graphics.polygon(gl, bb.getRotated(), x, y);
 			Graphics.fillEquilPolygon(gl, x, y, 0.01f, 32);
 			Graphics.setColor(255, 255, 255);
 		}
@@ -140,6 +145,35 @@ public abstract class Entity implements GameObject {
 				DEBUG_COLOR.r = 255; DEBUG_COLOR.g = 0;	
 			} else {
 				DEBUG_COLOR.r = 0; DEBUG_COLOR.g = 255;	
+			}
+		}
+		
+		if(colf == CollisionFlag.PASSTHROUGH) return;
+		ArrayList<LivingEntity> colliding = world.getColliding(this);
+		if(colliding.isEmpty()) return;
+		
+		for(LivingEntity col : colliding) {
+			Polygon xtrans = col.getBoundingBox().getRotated();
+			Polygon ytrans = col.getBoundingBox().getRotated();
+			xtrans.translate(new Translation(col.getX(), col.getY() - col.getVY() * delta_time, 0));
+			ytrans.translate(new Translation(col.getX() - col.getVX() * delta_time, col.getY(), 0));
+			Polygon tbb = bb.getRotated();
+			tbb.translate(new Translation(x, y, 0));
+			if(xtrans.isCollision(tbb)) {
+				if(colf == CollisionFlag.SOLID) {
+					col.translate(-col.getVX() * (delta_time + 0.001f), 0);
+					col.setVX(0);
+				} else if(colf == CollisionFlag.BOUNCE) {
+					col.setVX(-col.getVX());
+				}
+			}
+			if(ytrans.isCollision(tbb)) {
+				if(colf == CollisionFlag.SOLID) {
+					col.translate(0, -col.getVY() * (delta_time + 0.001f));
+					col.setVY(0);
+				} else if(colf == CollisionFlag.BOUNCE) {
+					col.setVY(-col.getVY());
+				}
 			}
 		}
 	}

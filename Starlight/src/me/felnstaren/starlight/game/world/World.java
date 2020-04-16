@@ -67,6 +67,13 @@ public class World {
 		return entities;
 	}
 	
+	public ArrayList<LivingEntity> getColliding(Entity check) {
+		ArrayList<LivingEntity> colliding = new ArrayList<LivingEntity>();
+		for(LivingEntity e : entities) 
+			if(!e.equals(check) && e.isCollision(check)) colliding.add(e);
+		return colliding;
+	}
+	
 	public LivingEntity getColliding(Entity check, EntityType cancollide) {
 		for(LivingEntity e : entities) 
 			if(e.getType() == cancollide && !e.equals(check) && e.isCollision(check)) return e;

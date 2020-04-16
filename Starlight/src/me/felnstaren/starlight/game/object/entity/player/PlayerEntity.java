@@ -4,12 +4,11 @@ import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.opengl.GL2;
 
 import me.felnstaren.starlight.engine.GameContainer;
-import me.felnstaren.starlight.engine.geometry.Polygon;
-import me.felnstaren.starlight.engine.geometry.Vertex;
 import me.felnstaren.starlight.engine.graphics.Graphics;
 import me.felnstaren.starlight.engine.graphics.ImageResource;
 import me.felnstaren.starlight.engine.logging.Level;
 import me.felnstaren.starlight.engine.logging.Logger;
+import me.felnstaren.starlight.game.object.CollisionFlag;
 import me.felnstaren.starlight.game.object.entity.LivingEntity;
 import me.felnstaren.starlight.game.object.entity.type.EntityType;
 import me.felnstaren.starlight.game.world.World;
@@ -17,9 +16,9 @@ import me.felnstaren.starlight.game.world.World;
 public class PlayerEntity extends LivingEntity {
 
 	public PlayerEntity(World world, float x, float y) {
-		super(EntityType.PLAYER_ENTITY, x, y, 0.2f, 0.4f, world);
+		super(EntityType.PLAYER_ENTITY, x, y, 0.2f, 0.4f, world, CollisionFlag.PASSTHROUGH);
 		this.texture = new ImageResource("entity/player/player.png");
-		this.bb = new Polygon(new Vertex(0.1f, -0.1f), new Vertex(0.2f, -0.2f), new Vertex(0f, 0.25f), new Vertex(-0.2f, -0.2f), new Vertex(-0.1f, -0.1f));
+		//bb.setRotation(0.45f);
 	}
 
 	public void render(GameContainer gc, GL2 gl) {
