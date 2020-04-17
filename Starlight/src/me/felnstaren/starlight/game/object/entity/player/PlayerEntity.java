@@ -5,7 +5,7 @@ import com.jogamp.opengl.GL2;
 
 import me.felnstaren.starlight.engine.GameContainer;
 import me.felnstaren.starlight.engine.graphics.Graphics;
-import me.felnstaren.starlight.engine.graphics.ImageResource;
+import me.felnstaren.starlight.engine.graphics.Image;
 import me.felnstaren.starlight.engine.logging.Level;
 import me.felnstaren.starlight.engine.logging.Logger;
 import me.felnstaren.starlight.game.object.CollisionFlag;
@@ -17,7 +17,7 @@ public class PlayerEntity extends LivingEntity {
 
 	public PlayerEntity(World world, float x, float y) {
 		super(EntityType.PLAYER_ENTITY, x, y, 0.2f, 0.4f, world, CollisionFlag.PASSTHROUGH);
-		this.texture = new ImageResource("entity/player/player.png");
+		this.texture = new Image("entity/player/player.png");
 		//bb.setRotation(0.45f);
 	}
 

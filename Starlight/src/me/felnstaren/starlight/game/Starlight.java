@@ -4,6 +4,7 @@ import com.jogamp.opengl.GL2;
 
 import me.felnstaren.starlight.engine.AbstractGame;
 import me.felnstaren.starlight.engine.GameContainer;
+import me.felnstaren.starlight.engine.graphics.Graphics;
 import me.felnstaren.starlight.engine.logging.Level;
 import me.felnstaren.starlight.engine.logging.Logger;
 import me.felnstaren.starlight.game.object.entity.interactable.CrateEntity;
@@ -20,7 +21,7 @@ public class Starlight extends AbstractGame {
 		world = new World("world");
 		player = new PlayerEntity(world, 0.0f, 0.0f);
 		crate = new CrateEntity(world, -1.0f, -1.0f);
-		crate.setVelocity(0.1f, 0);
+		crate.setVelocity(0.25f, 0.25f);
 		world.spawnEntity(player);
 		world.spawnEntity(crate);
 	}
@@ -31,6 +32,8 @@ public class Starlight extends AbstractGame {
 
 	public void render(GameContainer gc, GL2 gl) {
 		world.renderEntities(gc, gl);
+		Graphics.setColor(255, 255, 255);
+		Graphics.drawText(gl, "Hello, World!", -4, 1, 0.1f);
 	}
 	
 	

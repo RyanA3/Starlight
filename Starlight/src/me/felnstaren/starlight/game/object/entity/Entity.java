@@ -10,7 +10,7 @@ import me.felnstaren.starlight.engine.geometry.Translation;
 import me.felnstaren.starlight.engine.geometry.Vertex;
 import me.felnstaren.starlight.engine.graphics.Color;
 import me.felnstaren.starlight.engine.graphics.Graphics;
-import me.felnstaren.starlight.engine.graphics.ImageResource;
+import me.felnstaren.starlight.engine.graphics.Image;
 import me.felnstaren.starlight.game.Options;
 import me.felnstaren.starlight.game.object.CollisionFlag;
 import me.felnstaren.starlight.game.object.GameObject;
@@ -26,7 +26,7 @@ public abstract class Entity implements GameObject {
 	protected World world;
 	protected Polygon bb;
 	protected EntityType type;
-	protected ImageResource texture;
+	protected Image texture;
 	protected static final Color DEBUG_COLOR = new Color(0, 255, 0);
 	protected CollisionFlag colf;
 	
@@ -137,14 +137,6 @@ public abstract class Entity implements GameObject {
 	}
 	
 	public void update(GameContainer gc, float delta_time) {
-		if(Options.debug) {
-			if(world.isColliding(this)) {
-				DEBUG_COLOR.r = 255; DEBUG_COLOR.g = 0;	
-			} else {
-				DEBUG_COLOR.r = 0; DEBUG_COLOR.g = 255;	
-			}
-		}
-		
 		ArrayList<LivingEntity> colliding = world.getColliding(this);
 		if(!colliding.isEmpty()) {
 			for(LivingEntity col : colliding) {
@@ -181,6 +173,14 @@ public abstract class Entity implements GameObject {
 		
 		x += vx * delta_time;
 		y += vy * delta_time;
+		
+		if(Options.debug) {
+			if(world.isColliding(this)) {
+				DEBUG_COLOR.r = 255; DEBUG_COLOR.g = 0;	
+			} else {
+				DEBUG_COLOR.r = 0; DEBUG_COLOR.g = 255;	
+			}
+		}
 	}
 	
 }
