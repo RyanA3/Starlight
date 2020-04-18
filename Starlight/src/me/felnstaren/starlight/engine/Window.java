@@ -56,7 +56,7 @@ public class Window {
 		return width_scale;
 	}
 	
-	public int getHeightScale() {
+	public float getHeightScale() {
 		return window.getHeight() / (window.getWidth() / width_scale);
 	}
 	

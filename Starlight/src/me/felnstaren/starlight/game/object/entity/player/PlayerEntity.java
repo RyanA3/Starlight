@@ -14,6 +14,8 @@ import me.felnstaren.starlight.game.object.entity.type.EntityType;
 import me.felnstaren.starlight.game.world.World;
 
 public class PlayerEntity extends LivingEntity {
+	
+	private boolean grounded = false;
 
 	public PlayerEntity(World world, float x, float y) {
 		super(EntityType.PLAYER_ENTITY, x, y, 0.2f, 0.4f, world, CollisionFlag.PASSTHROUGH);
@@ -35,14 +37,27 @@ public class PlayerEntity extends LivingEntity {
 		
 		if(vx > 0.0001 || vx < -0.0001) vx *= 0.96;
 		else vx = 0;
-		if(vy > 0.0001 || vy < -0.0001) vy *= 0.96;
-		else vy = 0;
+		//if(vy > 0.0001 || vy < -0.0001) vy *= 0.96;
+		if(vy == 0) {
+			vy = 0;
+			grounded = true;
+		}
 		
-		if(gc.getInput().isKeyPressed(KeyEvent.VK_W)) vy += speed;
+		vy -= 0.05f;
+		
+		if(gc.getInput().isKeyPressed(KeyEvent.VK_W) && grounded) {
+			vy = 2f;
+			grounded = false;
+		}
 		if(gc.getInput().isKeyPressed(KeyEvent.VK_S)) vy -= speed;
 		if(gc.getInput().isKeyPressed(KeyEvent.VK_A)) vx -= speed;
 		if(gc.getInput().isKeyPressed(KeyEvent.VK_D)) vx += speed;
 		super.update(gc, delta_time);
+		
+		if(x > gc.getWindow().getWidthScale() / 2 + width) x = -gc.getWindow().getWidthScale() / 2 - width + 0.1f;
+		if(x < -gc.getWindow().getWidthScale() / 2 - width) x = gc.getWindow().getWidthScale() / 2 + width - 0.1f;
+		if(y > gc.getWindow().getHeightScale() / 2 + height) y = -gc.getWindow().getHeightScale() / 2 - height + 0.1f;
+		if(y < -gc.getWindow().getHeightScale() / 2 - height) y = gc.getWindow().getHeightScale() / 2 + height - 0.1f;
 	}
 
 }

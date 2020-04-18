@@ -171,6 +171,10 @@ public abstract class Entity implements GameObject {
 			}
 		}
 		
+		if(vx > 5) vx = 5;
+		else if(vx < -5) vx = -5;
+		if(vy > 5) vy = 5;
+		else if(vy < -5) vy = -5;
 		x += vx * delta_time;
 		y += vy * delta_time;
 		

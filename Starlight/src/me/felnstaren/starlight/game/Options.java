@@ -2,6 +2,6 @@ package me.felnstaren.starlight.game;
 
 public class Options {
 
-	public static boolean debug = false;
+	public static boolean debug = true;
 	
 }

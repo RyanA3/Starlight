@@ -44,6 +44,15 @@ public class Graphics {
 	
 
 	
+	public static void line(GL2 gl, float x1, float y1, float x2, float y2) {
+		begin(gl, GL2.GL_LINE_STRIP, 0, 0);
+		
+		gl.glVertex2f(x1, y1);
+		gl.glVertex2f(x2, y2);
+		
+		end(gl, 0, 0);
+	}
+	
 	public static void rect(GL2 gl, float x, float y, float width, float height) {
 		begin(gl, GL2.GL_LINE_STRIP, x, y);
 		
