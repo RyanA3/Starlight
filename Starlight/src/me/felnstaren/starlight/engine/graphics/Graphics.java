@@ -121,6 +121,8 @@ public class Graphics {
 		gl.glTranslatef(x, y, 0);
 		gl.glRotatef(-rotation, 0, 0, 1);
 		gl.glEnable(GL2.GL_TEXTURE_2D);
+		gl.glEnable(GL2.GL_BLEND);
+	    gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glBindTexture(GL2.GL_TEXTURE_2D, texture.getTextureObject());
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_NEAREST);
 		
@@ -138,6 +140,7 @@ public class Graphics {
 		gl.glFlush();
 		
 		gl.glBindTexture(GL2.GL_TEXTURE_2D, 0);
+		gl.glDisable(GL2.GL_BLEND);
 		gl.glDisable(GL2.GL_TEXTURE_2D);
 		gl.glRotatef(rotation, 0, 0, 1);
 		gl.glTranslatef(-x, -y, 0);

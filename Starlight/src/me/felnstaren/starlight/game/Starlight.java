@@ -44,10 +44,11 @@ public class Starlight extends AbstractGame {
 	}
 
 	public void render(GameContainer gc, GL2 gl) {
-		Graphics.setColor(r, g, b);
-		Graphics.drawText(gl, "NerdTyler     Mecrazy13\\n\\n  Felnstaren\\n          Geko96", -4.4f, 2f, 0.095f);
-		Graphics.setColor(255, 255, 255);
 		world.renderEntities(gc, gl);
+		Graphics.setColor(r, g, b);
+		Graphics.drawText(gl, "FPS: " + gc.getFPS(), -4.75f, (gc.getWindow().getHeightScale() / 2f) - 0.25f, 0.025f);
+		Graphics.drawText(gl, "Text Rendering", -3.0f, 0f, 0.095f);
+		Graphics.setColor(255, 255, 255);
 	}
 	
 	

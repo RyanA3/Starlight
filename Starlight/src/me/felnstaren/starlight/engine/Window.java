@@ -56,6 +56,10 @@ public class Window {
 		return width_scale;
 	}
 	
+	public int getHeightScale() {
+		return window.getHeight() / (window.getWidth() / width_scale);
+	}
+	
 	public GLWindow getGLWindow() {
 		return window;
 	}
