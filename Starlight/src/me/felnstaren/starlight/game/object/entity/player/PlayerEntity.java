@@ -22,6 +22,8 @@ public class PlayerEntity extends LivingEntity {
 	}
 
 	public void render(GameContainer gc, GL2 gl) {
+		Graphics.setColor(255, 255, 255);
+		Graphics.setRotation(0);
 		Graphics.drawTexture(gl, texture, x, y, width, height);
 		super.render(gc, gl);
 	}
@@ -30,7 +32,6 @@ public class PlayerEntity extends LivingEntity {
 		float speed = 0.05f;
 		
 		//https://stackoverflow.com/questions/14888619/java-collision-detection-walls
-		Logger.log(Level.STREAM, "Player updating w/ delta time: " + delta_time);
 		
 		if(vx > 0.0001 || vx < -0.0001) vx *= 0.96;
 		else vx = 0;

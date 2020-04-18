@@ -6,6 +6,8 @@ import com.jogamp.opengl.util.texture.Texture;
 import me.felnstaren.starlight.engine.geometry.Polygon;
 import me.felnstaren.starlight.engine.geometry.Vertex;
 import me.felnstaren.starlight.engine.graphics.font.Font;
+import me.felnstaren.starlight.engine.logging.Level;
+import me.felnstaren.starlight.engine.logging.Logger;
 import me.felnstaren.starlight.game.Options;
 
 public class Graphics {
@@ -150,15 +152,33 @@ public class Graphics {
 	
 	public static void drawText(GL2 gl, String text, float offX, float offY, float size) {
 		float offset = 0;
+		float lineset = 0;
 		
 		for(int i = 0; i < text.length(); i++) {
 			int unicode = text.codePointAt(i);
-			Image character = font.getCharacterImage((char) unicode);
-			Texture texture = character.getTexture(gl.getGLProfile());
+			
+			if(text.length() > i + 1 && unicode == 92 && text.codePointAt(i + 1) == 110) {
+				i += 1;
+				lineset -= (font.getFontImage().getHeight() * size);
+				offset = 0;
+				continue;
+			}
+			
+			Texture character = font.getCharacterTexture(gl.getGLProfile(), (char) unicode);
 			offset += (character.getWidth() * size) / 2;
-			drawTexture(gl, texture, offX + offset, offY, character.getWidth() * size, character.getHeight() * size);
-			if(Options.debug) rect(gl, offset + offX, offY, character.getWidth() * size, character.getHeight() * size);
-			offset += (texture.getWidth() * size) / 2;
+			
+			drawTexture(gl, character, offX + offset, offY + lineset, character.getWidth() * size, character.getHeight() * size);
+			if(Options.debug) {
+				float pr = r;
+				float pg = g;
+				float pb = b;
+				setColor(255, 255, 255);
+				rect(gl, offset + offX, lineset + offY, character.getWidth() * size, character.getHeight() * size);
+				r = pr;
+				g = pg;
+				b = pb;
+			}
+			offset += (character.getWidth() * size) / 2;
 		}
 	}
 	

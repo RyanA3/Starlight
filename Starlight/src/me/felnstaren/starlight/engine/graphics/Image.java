@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 
+import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
@@ -59,6 +60,10 @@ public class Image {
 	
 	public BufferedImage getBuffered() {
 		return image;
+	}
+	
+	public void destroy(GL2 gl) {
+		if(texture != null) texture.destroy(gl);
 	}
 	
 }

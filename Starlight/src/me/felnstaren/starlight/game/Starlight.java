@@ -17,23 +17,37 @@ public class Starlight extends AbstractGame {
 	private CrateEntity crate;
 	private PlayerEntity player;
 	
+	private int r = 0;
+	private int g = 85;
+	private int b = 170;
+	private int rdir = 1;
+	private int gdir = -1;
+	private int bdir = 1;
+	
 	public void init(GameContainer gc, GL2 gl) {
 		world = new World("world");
 		player = new PlayerEntity(world, 0.0f, 0.0f);
-		crate = new CrateEntity(world, -1.0f, -1.0f);
-		crate.setVelocity(0.25f, 0.25f);
+		crate = new CrateEntity(world, -3f, -0.5f);
+		crate.setVelocity(2f, 0);
 		world.spawnEntity(player);
 		world.spawnEntity(crate);
 	}
 
 	public void update(GameContainer gc, float delta_time) {
 		world.updateEntities(gc, delta_time);
+		r += rdir;
+		g += gdir;
+		b += bdir;
+		if(r > 254 || r < 1) rdir *= -1;
+		if(g > 254 || g < 1) gdir *= -1;
+		if(b > 254 || b < 1) bdir *= -1;
 	}
 
 	public void render(GameContainer gc, GL2 gl) {
-		world.renderEntities(gc, gl);
+		Graphics.setColor(r, g, b);
+		Graphics.drawText(gl, "NerdTyler     Mecrazy13\\n\\n  Felnstaren\\n          Geko96", -4.4f, 2f, 0.095f);
 		Graphics.setColor(255, 255, 255);
-		Graphics.drawText(gl, "Hello, World!", -4, 1, 0.1f);
+		world.renderEntities(gc, gl);
 	}
 	
 	
