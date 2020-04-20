@@ -3,7 +3,8 @@ package me.felnstaren.starlight.game.object.entity.type;
 public enum EntityType {
 
 	PLAYER_ENTITY("Player"),
-	CRATE("Crate");
+	CRATE("Crate"),
+	WALL("Wall");
 	
 	
 	

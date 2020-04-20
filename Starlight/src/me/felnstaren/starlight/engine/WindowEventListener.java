@@ -39,7 +39,7 @@ public abstract class WindowEventListener implements GLEventListener {
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		float width_scale = gc.getWindow().getWidthScale();
-		float height_scale = height / (width / width_scale);
+		float height_scale = gc.getWindow().getHeightScale(); /*height / (width / width_scale);*/
 		gl.glOrtho(-width_scale /2, width_scale / 2, -height_scale / 2, height_scale / 2, -1, 1);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 	}

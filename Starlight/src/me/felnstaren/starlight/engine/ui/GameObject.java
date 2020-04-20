@@ -1,4 +1,4 @@
-package me.felnstaren.starlight.game.object;
+package me.felnstaren.starlight.engine.ui;
 
 import com.jogamp.opengl.GL2;
 

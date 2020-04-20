@@ -11,9 +11,9 @@ import me.felnstaren.starlight.engine.geometry.Vertex;
 import me.felnstaren.starlight.engine.graphics.Color;
 import me.felnstaren.starlight.engine.graphics.Graphics;
 import me.felnstaren.starlight.engine.graphics.Image;
+import me.felnstaren.starlight.engine.ui.GameObject;
 import me.felnstaren.starlight.game.Options;
 import me.felnstaren.starlight.game.object.CollisionFlag;
-import me.felnstaren.starlight.game.object.GameObject;
 import me.felnstaren.starlight.game.object.entity.type.EntityType;
 import me.felnstaren.starlight.game.world.World;
 
@@ -29,6 +29,8 @@ public abstract class Entity implements GameObject {
 	protected Image texture;
 	protected static final Color DEBUG_COLOR = new Color(0, 255, 0);
 	protected CollisionFlag colf;
+	
+	protected static final int VCAP = 10;
 	
 	public Entity(EntityType type, float x, float y, float width, float height, World world, CollisionFlag colf) {
 		this.type = type;
@@ -171,10 +173,10 @@ public abstract class Entity implements GameObject {
 			}
 		}
 		
-		if(vx > 5) vx = 5;
-		else if(vx < -5) vx = -5;
-		if(vy > 5) vy = 5;
-		else if(vy < -5) vy = -5;
+		if(vx > VCAP) vx = VCAP;
+		else if(vx < -VCAP) vx = -VCAP;
+		if(vy > VCAP) vy = VCAP;
+		else if(vy < -VCAP) vy = -VCAP;
 		x += vx * delta_time;
 		y += vy * delta_time;
 		

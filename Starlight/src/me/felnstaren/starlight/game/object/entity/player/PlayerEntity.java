@@ -6,8 +6,6 @@ import com.jogamp.opengl.GL2;
 import me.felnstaren.starlight.engine.GameContainer;
 import me.felnstaren.starlight.engine.graphics.Graphics;
 import me.felnstaren.starlight.engine.graphics.Image;
-import me.felnstaren.starlight.engine.logging.Level;
-import me.felnstaren.starlight.engine.logging.Logger;
 import me.felnstaren.starlight.game.object.CollisionFlag;
 import me.felnstaren.starlight.game.object.entity.LivingEntity;
 import me.felnstaren.starlight.game.object.entity.type.EntityType;
@@ -31,22 +29,20 @@ public class PlayerEntity extends LivingEntity {
 	}
 
 	public void update(GameContainer gc, float delta_time) {
-		float speed = 0.05f;
+		float speed = 0.2f;
 		
 		//https://stackoverflow.com/questions/14888619/java-collision-detection-walls
 		
 		if(vx > 0.0001 || vx < -0.0001) vx *= 0.96;
 		else vx = 0;
 		//if(vy > 0.0001 || vy < -0.0001) vy *= 0.96;
-		if(vy == 0) {
-			vy = 0;
-			grounded = true;
-		}
+		if(vy == 0) grounded = true;
+		else grounded = false;
 		
-		vy -= 0.05f;
+		vy -= 0.1f;
 		
 		if(gc.getInput().isKeyPressed(KeyEvent.VK_W) && grounded) {
-			vy = 2f;
+			vy = 4f;
 			grounded = false;
 		}
 		if(gc.getInput().isKeyPressed(KeyEvent.VK_S)) vy -= speed;

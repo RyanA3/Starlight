@@ -31,13 +31,11 @@ public class Font {
 		for(int i = 0; i < font_image.getWidth(); i++) {
 			if(font_image.getPixel(i, 0) == 0xff0000ff) { //Beginning of a character: 0 red 0 green 255 blue
 				offsets[unicode] = i + 1;
-				System.out.println("char start: " + i);
 			}
 			
 			if(font_image.getPixel(i, 0) == 0xffff0000) { //Ending of a character 255 red 0 green 0 blue
 				widths[unicode] = i - offsets[unicode];
 				unicode++;
-				System.out.println("char end: " + i);
 			}
 		}
 	}

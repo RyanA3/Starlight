@@ -6,8 +6,6 @@ import com.jogamp.opengl.util.texture.Texture;
 import me.felnstaren.starlight.engine.geometry.Polygon;
 import me.felnstaren.starlight.engine.geometry.Vertex;
 import me.felnstaren.starlight.engine.graphics.font.Font;
-import me.felnstaren.starlight.engine.logging.Level;
-import me.felnstaren.starlight.engine.logging.Logger;
 import me.felnstaren.starlight.game.Options;
 
 public class Graphics {
