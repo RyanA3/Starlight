@@ -17,6 +17,7 @@ public abstract class Button implements GameObject {
 	protected float x, y;
 	protected boolean visible = true;
 	protected boolean active = true;
+	private boolean pressed = false;
 	
 	protected int fillr = 220;
 	protected int fillg = 220;
@@ -53,9 +54,18 @@ public abstract class Button implements GameObject {
 	}
 
 	public void update(GameContainer gc, float delta_time) {
-		if(!gc.getInput().isButtonDown(MouseEvent.BUTTON1)) return;
 		Vertex mcor = new Vertex(gc.getInput().getMouseX(), gc.getInput().getMouseY());
 		gc.getWindow().toWindowCoords(mcor);
+		
+		if(pressed) {
+			if(gc.getInput().isButtonUp(MouseEvent.BUTTON1)) pressed = false;
+			else {
+				
+			}
+			return;
+		}
+		
+		if(!gc.getInput().isButtonDown(MouseEvent.BUTTON1)) return;
 		Logger.log(Level.INFO, "Click " + mcor.x + "," + mcor.y);
 		
 		if(mcor.x > x - (width / 2) && 
@@ -64,6 +74,7 @@ public abstract class Button implements GameObject {
 				mcor.y < y + (height / 2)) {
 			Logger.log(Level.INFO, "Is Inside");
 			onPress(gc, delta_time);
+			pressed = true;
 		}
 	}
 	

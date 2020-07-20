@@ -5,7 +5,6 @@ import com.jogamp.opengl.GLProfile;
 
 import me.felnstaren.starlight.engine.logging.Level;
 import me.felnstaren.starlight.engine.logging.Logger;
-import me.felnstaren.starlight.game.Options;
 
 public class GameContainer implements Runnable {
 
@@ -63,10 +62,12 @@ public class GameContainer implements Runnable {
 		int frames = 0;
 		fps = 0;
 		
+		int updates = 0;
+		
 		//game.init(this); //Game is init from gl window
 
 		while(running) {
-			render = false; //set to true to disable frame cap
+			render = true; //set to true to disable frame cap
 			
 			first_time = System.nanoTime() / 1000000000.0;
 			passed_time = first_time - last_time;
@@ -76,26 +77,27 @@ public class GameContainer implements Runnable {
 			frame_time += passed_time;
 			
 			while(unprocessed_time >= update_cap) {
-				Logger.log(Level.STREAM, "Updating");
-				
 				unprocessed_time -= update_cap;
 				render = true;
 				
 				//Update game
 				game.update(this, (float) (update_cap));
 				input.update();
+				updates++;
 				
 				if(frame_time >= 1.0) {
 					frame_time = 0;
 					fps = frames;
 					frames = 0;
+					Logger.log(Level.STREAM, "Rendering at FPS: " + fps);
+					Logger.log(Level.STREAM, "Updated " + updates + " times");
+					updates = 0;
 				}
 			}
 			
+			
 			if(render) {
-				Logger.log(Level.STREAM, "Rendering at FPS: " + fps);
 				window.display(); //Game is rendered from gl window
-				
 				frames++;
 			} else {
 				try { Thread.sleep(1); }

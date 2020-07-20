@@ -30,11 +30,11 @@ public class Starlight extends AbstractGame {
 	public void init(GameContainer gc, GL2 gl) {
 		world = new World("world");
 		player = new PlayerEntity(world, 0.0f, 0.0f);
-		crate = new CrateEntity(world, -5f, -1.5f);
+		crate = new CrateEntity(world, -5f, -1.9f);
 		crate.setVelocity(3f, 0);
-		world.spawnEntity(player);
-		world.spawnEntity(crate);
-		world.spawnEntity(new WallEntity(0.01f, -2.25f, 9.98f, 0.25f, world));
+		//world.spawnEntity(player);
+		//world.spawnEntity(crate);
+		//world.spawnEntity(new WallEntity(0.01f, -2.25f, 9.98f, 0.25f, world));
 		
 		button = new Button(1, 1, 2, 0.5f) {
 			public void onPress(GameContainer gc, float delta_time) {
@@ -51,7 +51,7 @@ public class Starlight extends AbstractGame {
 		if(g > 254 || g < 1) gdir *= -1;
 		if(b > 254 || b < 1) bdir *= -1;
 		
-		button.update(gc, delta_time);
+		//button.update(gc, delta_time);
 	}
 
 	public void render(GameContainer gc, GL2 gl) {
@@ -59,9 +59,10 @@ public class Starlight extends AbstractGame {
 		Graphics.setColor(r, g, b);
 		Graphics.drawText(gl, "FPS: " + gc.getFPS(), -4.75f, (gc.getWindow().getHeightScale() / 2f) - 0.25f, 0.025f);
 		Graphics.drawText(gl, "Text Rendering", -3.0f, 0f, 0.095f);
+		//Graphics.drawText(gl, "1234567890 1234567890 1234567890 1234567890 1234567890 1234567890\\n1234567890 1234567890 1234567890 1234567890 1234567890 1234567890\\n1234567890 1234567890 1234567890 1234567890 1234567890 1234567890\\n1234567890 1234567890 1234567890 1234567890 1234567890 1234567890", -4.8f, -0.5f, 0.025f);
 		Graphics.setColor(255, 255, 255);
 		
-		button.render(gc, gl);
+		//button.render(gc, gl);
 		
 		if(Options.debug) {
 			Graphics.line(gl, -gc.getWindow().getWidthScale() / 2, 0, gc.getWindow().getWidthScale() / 2, 0);
@@ -83,7 +84,7 @@ public class Starlight extends AbstractGame {
 	
 	
 	public static void main(String[] args) {
-		Logger.log_level = Level.INFO;
+		Logger.log_level = Level.STREAM;
 		Logger.colors = false;
 		GameContainer gc = new GameContainer(new Starlight());
 		gc.start();

@@ -7,6 +7,8 @@ import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 
 import me.felnstaren.starlight.engine.graphics.Image;
+import me.felnstaren.starlight.engine.logging.Level;
+import me.felnstaren.starlight.engine.logging.Logger;
 
 public class Font {
 
@@ -48,11 +50,8 @@ public class Font {
 	
 	public Texture getCharacterTexture(GLProfile profile, char c) {
 		if(loaded[c] != null) return loaded[c];
-		int x = offsets[c];
-		int y = 0;
-		int width = widths[c];
-		int height = font_image.getHeight();
-		BufferedImage character = font_image.getBuffered().getSubimage(x, y, width, height);
+		Logger.log(Level.INFO, "Loading new texture for character: " + c);
+		BufferedImage character = font_image.getBuffered().getSubimage(offsets[c], 0, widths[c], font_image.getHeight());
 		Texture texture = AWTTextureIO.newTexture(profile, character, true);
 		loaded[c] = texture;
 		return texture;
