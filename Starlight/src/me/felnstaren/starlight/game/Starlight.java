@@ -1,10 +1,15 @@
 package me.felnstaren.starlight.game;
 
+import java.awt.image.BufferedImage;
+
 import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.util.texture.Texture;
 
 import me.felnstaren.starlight.engine.AbstractGame;
 import me.felnstaren.starlight.engine.GameContainer;
 import me.felnstaren.starlight.engine.graphics.Graphics;
+import me.felnstaren.starlight.engine.graphics.Image;
+import me.felnstaren.starlight.engine.graphics.font.Font;
 import me.felnstaren.starlight.engine.logging.Level;
 import me.felnstaren.starlight.engine.logging.Logger;
 import me.felnstaren.starlight.engine.ui.Button;
@@ -19,6 +24,9 @@ public class Starlight extends AbstractGame {
 	private CrateEntity crate;
 	private PlayerEntity player;
 	private Button button;
+	private Texture text_test;
+	private Image fps_text;
+	private int pr_fps = 0;
 	
 	private int r = 0;
 	private int g = 85;
@@ -32,14 +40,19 @@ public class Starlight extends AbstractGame {
 		player = new PlayerEntity(world, 0.0f, 0.0f);
 		crate = new CrateEntity(world, -5f, -1.9f);
 		crate.setVelocity(3f, 0);
-		//world.spawnEntity(player);
-		//world.spawnEntity(crate);
-		//world.spawnEntity(new WallEntity(0.01f, -2.25f, 9.98f, 0.25f, world));
+		world.spawnEntity(player);
+		world.spawnEntity(crate);
+		world.spawnEntity(new WallEntity(0.01f, -2.25f, 9.98f, 0.25f, world));
+		
+		text_test = Font.STANDARD.genStitchedTexture(gl.getGLProfile(), "Text Rendering!\\nLine 2!\\nLine 3!\\nLine 4!\\nLine 5!");
+		fps_text = new Image(Font.STANDARD.genStitchedTexture("FPS: " + gc.getFPS()));
+		pr_fps = gc.getFPS();
 		
 		button = new Button(1, 1, 2, 0.5f) {
 			public void onPress(GameContainer gc, float delta_time) {
 				Logger.log(Level.INFO, "Pressed");
-			}};
+			}
+		};
 	}
 
 	public void update(GameContainer gc, float delta_time) {
@@ -52,14 +65,20 @@ public class Starlight extends AbstractGame {
 		if(b > 254 || b < 1) bdir *= -1;
 		
 		//button.update(gc, delta_time);
+		
+		if(pr_fps != gc.getFPS()) {
+			pr_fps = gc.getFPS();
+			fps_text = new Image(Font.STANDARD.genStitchedTexture("FPS: " + gc.getFPS()));
+		}
 	}
 
 	public void render(GameContainer gc, GL2 gl) {
 		world.renderEntities(gc, gl);
+		
 		Graphics.setColor(r, g, b);
-		Graphics.drawText(gl, "FPS: " + gc.getFPS(), -4.75f, (gc.getWindow().getHeightScale() / 2f) - 0.25f, 0.025f);
-		Graphics.drawText(gl, "Text Rendering", -3.0f, 0f, 0.095f);
-		//Graphics.drawText(gl, "1234567890 1234567890 1234567890 1234567890 1234567890 1234567890\\n1234567890 1234567890 1234567890 1234567890 1234567890 1234567890\\n1234567890 1234567890 1234567890 1234567890 1234567890 1234567890\\n1234567890 1234567890 1234567890 1234567890 1234567890 1234567890", -4.8f, -0.5f, 0.025f);
+		Graphics.drawText(gl, fps_text, -4.75f, 2.4f, 0.025f);
+		//Graphics.drawTexture(gl, fps_text, -4.25f, 2.3f, fps_text.getWidth() * 0.025f, fps_text.getHeight() * 0.025f);
+		//Graphics.drawTexture(gl, text_test, 0f, 0f, text_test.getWidth() * 0.075f, text_test.getHeight() * 0.075f);
 		Graphics.setColor(255, 255, 255);
 		
 		//button.render(gc, gl);

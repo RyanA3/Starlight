@@ -158,8 +158,16 @@ public class Graphics {
 		drawTexture(gl, texture, x, y, width, height);
 	}
 	
+	public static void drawText(GL2 gl, Texture text_image, float x, float y, float scale) {
+		drawTexture(gl, text_image, x + (text_image.getWidth() * scale / 2), y - (text_image.getHeight() * scale / 2), text_image.getWidth() * scale, text_image.getHeight() * scale);
+	}
+	
+	public static void drawText(GL2 gl, Image text_image, float x, float y, float scale) {
+		drawText(gl, text_image.getTexture(gl.getGLProfile()), x, y, scale);
+	}
 	
 	
+	@Deprecated
 	public static void drawText(GL2 gl, String text, float offX, float offY, float size) {
 		float offset = 0;
 		float lineset = 0;
